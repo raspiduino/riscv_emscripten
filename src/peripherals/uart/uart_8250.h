@@ -42,7 +42,7 @@ typedef struct uart_ns8250_struct
 
     uint8_t regs[UART_NS8250_NR_REGS];
 
-    pthread_mutex_t lock;
+    //pthread_mutex_t lock;
 
 } uart_ns8250_td;
 

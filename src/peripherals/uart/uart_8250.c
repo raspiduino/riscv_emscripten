@@ -39,10 +39,10 @@ void uart_init(uart_ns8250_td *uart)
 {
     memset(uart, 0, sizeof(uart_ns8250_td));
 
-    if (pthread_mutex_init(&uart->lock, NULL) != 0)
-    {
-        die_msg("uart mutex init failed\n");
-    }
+    //if (pthread_mutex_init(&uart->lock, NULL) != 0)
+    //{
+    //    die_msg("uart mutex init failed\n");
+    //}
 
     fifo_init(&uart->tx_fifo, uart->tx_fifo_data, UART_NS8250_FIFO_SIZE);
     fifo_init(&uart->rx_fifo, uart->rx_fifo_data, UART_NS8250_FIFO_SIZE);
@@ -65,7 +65,7 @@ rv_ret uart_bus_access(void *priv, privilege_level priv_level, bus_access_type a
     if(len != 1)
         die_msg("UART WRITE: Only single byte access allowed!\n");
 
-    pthread_mutex_lock(&uart->lock);
+    //pthread_mutex_lock(&uart->lock);
 
     if(access_type == bus_write_access)
     {
@@ -256,7 +256,7 @@ rv_ret uart_bus_access(void *priv, privilege_level priv_level, bus_access_type a
         }
     }
 
-    pthread_mutex_unlock(&uart->lock);
+    //pthread_mutex_unlock(&uart->lock);
 
     return rv_ok;
 }
@@ -269,7 +269,7 @@ uint8_t uart_update(void *priv)
     uint8_t tmp_fifo_len = 0;
     uint8_t irq_trigger = 0;
 
-    pthread_mutex_lock(&uart->lock);
+    //pthread_mutex_lock(&uart->lock);
 
     if(fifo_is_full(&uart->tx_fifo) || uart->tx_needs_flush)
     {
@@ -305,14 +305,14 @@ uint8_t uart_update(void *priv)
 
     uart->regs[REG_IIR] = uart->curr_iir_id;
 
-    pthread_mutex_unlock(&uart->lock);
+    //pthread_mutex_unlock(&uart->lock);
 
     return irq_trigger;
 }
 
 void uart_add_rx_char(uart_ns8250_td *uart, uint8_t x)
 {
-    pthread_mutex_lock(&uart->lock);
+    //pthread_mutex_lock(&uart->lock);
 
     // uint8_t tmp = 13;
     fifo_in(&uart->rx_fifo, &x, 1);
@@ -322,5 +322,5 @@ void uart_add_rx_char(uart_ns8250_td *uart, uint8_t x)
     // printf("RX %x\n", x);
     // assign_u8_bit(&uart->regs[REG_LSR], 0, 1);
 
-    pthread_mutex_unlock(&uart->lock);
+    //pthread_mutex_unlock(&uart->lock);
 }

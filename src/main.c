@@ -68,7 +68,7 @@ void start_uart_rx_thread(void *p)
     pthread_create(&uart_rx_th_id, NULL, uart_rx_thread, p);
 }
 
-static void parse_options(int argc, 
+/*static void parse_options(int argc, 
                           char** argv, 
                           char **fw_file, 
                           char **dtb_file, 
@@ -150,17 +150,17 @@ static void parse_options(int argc,
 
     *fw_file = arg_fw_file;
     *dtb_file = arg_dtb_file;
-}
+}*/
 
-
-int main(int argc, char *argv[])
+// Emulator's main entry point
+void em_main(char *fw_file, char *dtb_file)
 {
-    char *fw_file = NULL;
-    char *dtb_file = NULL;
+    //char *fw_file = argv[1];
+    //char *dtb_file = argv[2];
     rv_uint_xlen success_pc = 0;
     uint64_t num_cycles = 0;
 
-    parse_options(argc, argv, &fw_file, &dtb_file, &success_pc, &num_cycles);
+    //parse_options(argc, argv, &fw_file, &dtb_file, &success_pc, &num_cycles);
 
     rv_soc_td rv_soc;
     rv_soc_init(&rv_soc, fw_file, dtb_file);

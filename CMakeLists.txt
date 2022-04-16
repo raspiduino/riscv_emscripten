@@ -62,10 +62,17 @@ set(INC_SOC
     src/soc
 )
 
+# Generate html
+set(CMAKE_EXECUTABLE_SUFFIX ".html")
+
 add_executable(riscv_em ${SRC_HELPER} ${SRC_CORE} ${SRC_PERIPH} ${SRC_SOC} src/main.c)
 target_include_directories(riscv_em PUBLIC . ${INC_HELPER} ${INC_CORE} ${INC_PERIPH} ${INC_SOC})
-target_compile_options(riscv_em PRIVATE -Wall -Wextra -pedantic -Werror)
-target_link_libraries(riscv_em pthread)
+target_compile_options(riscv_em PRIVATE -Wall -Wextra -pedantic -Werror -O3)
+
+# Fix compiler warning 'wasm-ld: error: initial memory too small, n bytes needed'
+target_link_options(riscv_em PRIVATE -sWASM=1 -sTOTAL_MEMORY=268435456 -O3 -sEXPORTED_FUNCTIONS=['em_main'] -sEXPORTED_RUNTIME_METHODS=['ccall', 'cwrap'])
+
+#target_link_libraries(riscv_em pthread) # No pthread in web browser
 
 install (TARGETS riscv_em
          ARCHIVE DESTINATION lib

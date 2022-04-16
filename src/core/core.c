@@ -1686,10 +1686,10 @@ static void rv_call_from_opcode_list(rv_core_td *rv_core, instruction_desc_td *o
     if( (opcode_list[opcode].preparation_cb == NULL) &&
         (opcode_list[opcode].execution_cb == NULL) &&
         (opcode_list[opcode].next == NULL) )
-        die_msg("Unknown instruction: %08x PC: "PRINTF_FMT" Cycle: %016ld\n", rv_core->instruction, rv_core->pc, rv_core->curr_cycle);
+        die_msg("Unknown instruction: %08x PC: "PRINTF_FMT" Cycle: %016llu\n", rv_core->instruction, rv_core->pc, rv_core->curr_cycle);
 
     if(opcode >= list_size)
-        die_msg("Unknown instruction: %08x PC: "PRINTF_FMT" Cycle: %016ld\n", rv_core->instruction, rv_core->pc, rv_core->curr_cycle);
+        die_msg("Unknown instruction: %08x PC: "PRINTF_FMT" Cycle: %016llu\n", rv_core->instruction, rv_core->pc, rv_core->curr_cycle);
 
     if(opcode_list[opcode].preparation_cb != NULL)
         opcode_list[opcode].preparation_cb(rv_core, &next_subcode);
